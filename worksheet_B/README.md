@@ -1,3 +1,4 @@
+```
 guessesTaken = 0
 likenessScore = 0
 secretWord = ...				//pick the secret word, I assume from a predetermined list.
@@ -41,3 +42,6 @@ while (true) loop
 		print "Game Over"
 		print "You have run out of guesses"
 		print "The correct answer was " secretWord
+```
+
+![Flowchart](Comp110wsBflow.PNG)
