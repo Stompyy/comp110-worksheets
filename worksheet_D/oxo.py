@@ -1,11 +1,12 @@
 BOARD_EDGE_LENGTH = 3
 WINNING_ROW_LENGTH = 3
-# Was going to use the above to allow for larger (or smaller) n * n boards, although this would require
-# redefining the --+---+-- drawing section in show(). I may come back to this. The plan is to run a loop in
-# get_winner() for the check depending on the required length of the winning row (it may not have to be the
-# BOARD_EDGE_LENGTH and this is already built in to the checks.
+
+# Changing the board size obviously requires redefining the --+---+-- drawing section in show().
+# The winning row may not have to be the BOARD_EDGE_LENGTH so this is built in to the checks.
 #
-# Would have written as BOARD_HEIGHT and BOARD_WIDTH but the worksheet asks for n * n implying square.
+# oxotest.py does not allow lengths greater than 3 currently. I may tweak it to prove it works.
+#
+# Also would have written as BOARD_HEIGHT and BOARD_WIDTH but the worksheet asks for n * n implying square.
 
 
 class OxoBoard:
@@ -34,29 +35,64 @@ class OxoBoard:
             If there are no empty squares, return True. """
 
         # Couldn't get this next line to work. Could it work?
-        # all(value != 0 for value in self.board)
 
-        for x in xrange (BOARD_EDGE_LENGTH):
-            for y in xrange (BOARD_EDGE_LENGTH):
-                if self.get_square(x, y) == 0:
-                    return False
-        return True
+        # Missed the return! Cheers Ed!
+
+        return all(value != 0 for value in self.board.values())
 
     def get_winner(self):
-        """ If a player has three in a row, return 1 or 2 depending on which player.
+        """Revised get_winner function that looks for winning rows of length WINNING_ROW_LENGTH.
+        Clashes with oxotest.py because of the assumed 3x3 grid though.
+        Previous version kept below"""
+        for x in xrange (BOARD_EDGE_LENGTH):
+            for y in xrange (BOARD_EDGE_LENGTH):
+
+                current_contents = self.get_square(x, y)
+
+                if current_contents != 0:
+
+                    # Check for vertical in a row
+                    for i in xrange (WINNING_ROW_LENGTH):
+                        if current_contents != self.get_square(x, y + i):
+                            break
+                    else:
+                        return current_contents
+
+                    # Check for three in a row
+                    for i in xrange (WINNING_ROW_LENGTH):
+                        if current_contents != self.get_square(x + i, y):
+                            break
+                    else:
+                        return current_contents
+
+                    # Check for diagonal down right in a row
+                    for i in xrange (WINNING_ROW_LENGTH):
+                        if current_contents != self.get_square(x + i, y + i):
+                            break
+                    else:
+                        return current_contents
+
+                    #  Check for diagonal down left in a row
+                    for i in xrange (WINNING_ROW_LENGTH):
+                        if current_contents != self.get_square(x + i, y - i):
+                            break
+                    else:
+                        return current_contents
+        return 0
+
+    def get_winner_old(self):
+        """ Not used now. Kept it for nostalgia.
+        If a player has three in a row, return 1 or 2 depending on which player.
             Otherwise, return 0. """
 
         for x in xrange (BOARD_EDGE_LENGTH):
             for y in xrange (BOARD_EDGE_LENGTH):
 
-                # current_contents variable name not necessary, however it reads slightly better with this seperation
-                # instead of just using just self.get_square(x, y)
                 current_contents = self.get_square(x, y)
 
                 if current_contents != 0:
 
                     # Could collaborate the following checks but the result would be less readable
-                    # This is also where I would implement a loop if if different winning row lengths were required
 
                     # Check for vertical three in a row
                     if current_contents == self.get_square(x, y + 1) == self.get_square(x, y + 2):
@@ -77,10 +113,10 @@ class OxoBoard:
 
     def show(self):
         """ Display the current board state in the terminal. You should not need to edit this. """
-        for y in xrange(3):
+        for y in xrange(BOARD_EDGE_LENGTH):
             if y > 0:
                 print "--+---+--"
-            for x in xrange(3):
+            for x in xrange(BOARD_EDGE_LENGTH):
                 if x > 0:
                     print '|',
 
@@ -105,7 +141,7 @@ def input_square():
             print "Input must be two numbers separated by a comma!"
             continue
 
-        if x < 0 or x > 2 or y < 0 or y > 2:
+        if x < 0 or x > BOARD_EDGE_LENGTH or y < 0 or y > BOARD_EDGE_LENGTH:
             print "Input is out of bounds!"
             continue
 
