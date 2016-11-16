@@ -2,17 +2,17 @@ worksheet_E
 
 (a)
 
-s2 = 0
-s3 = s0
+    s2 = 0
+    s3 = s0
 
-s2 += s1
-s3 += -1
-
-while s3 != 0:
     s2 += s1
     s3 += -1
 
-# I know this is conventionally '-=' but I prefer multiple '+=' when reading addition code sequentially. (Also the literal equivalent of addi ... ... -1 is += -1 !)
+    while s3 != 0:
+        s2 += s1
+        s3 += -1
+
+    # I know this is conventionally '-=' but I prefer multiple '+=' when reading addition code sequentially. (Also the literal equivalent of addi ... ... -1 is += -1 !)
 
 (b)
 
@@ -20,19 +20,19 @@ The value in the s3 register acts as a counter, adding the value stored in s1 to
 
 (c)
 
-s0 = 10
-s1 = 1
+    s0 = 10
+    s1 = 1
 
-while s0 != 0:
-    s2 = 0
-    s3 = s0
-    
-    while s3 != 0:
-        s2 += s1
-        s3 += -1
-        
-    s1 = s2
-    s0 += -1
+    while s0 != 0:
+        s2 = 0
+        s3 = s0
+
+        while s3 != 0:
+            s2 += s1
+            s3 += -1
+
+        s1 = s2
+        s0 += -1
     
 (d)
 
