@@ -15,17 +15,18 @@ class OxoBoard:
         self.board = {}
         for x in xrange(BOARD_EDGE_LENGTH):
             for y in xrange(BOARD_EDGE_LENGTH):
-                self.board.update({(x, y) : 0})
+                self.board[x, y] = 0
 
     def get_square(self, x, y):
         """ Return 0, 1 or 2 depending on the contents of the specified square. """
+        # Use .get here as later a None return is relied upon for out of bounds x, y coordinates.
         return self.board.get((x, y))
 
     def set_square(self, x, y, mark):
         """ If the specified square is currently empty (0), fill it with mark and return True.
             If the square is not empty, leave it as-is and return False. """
         if self.get_square(x, y) == 0:
-            self.board[(x, y)] = mark
+            self.board[x, y] = mark
             return True
         else:
             return False
@@ -34,16 +35,12 @@ class OxoBoard:
         """ If there are still empty squares on the board, return False.
             If there are no empty squares, return True. """
 
-        # Couldn't get this next line to work. Could it work?
-
-        # Missed the return! Cheers Ed!
-
-        return all(value != 0 for value in self.board.values())
+        #return all(value != 0 for value in self.board.values())
+        return 0 not in self.board.values()
 
     def get_winner(self):
         """Revised get_winner function that looks for winning rows of length WINNING_ROW_LENGTH.
-        Clashes with oxotest.py because of the assumed 3x3 grid though.
-        Previous version kept below"""
+        Clashes with oxotest.py because of the assumed 3x3 grid though."""
         for x in xrange (BOARD_EDGE_LENGTH):
             for y in xrange (BOARD_EDGE_LENGTH):
 
@@ -52,21 +49,21 @@ class OxoBoard:
                 if current_contents != 0:
 
                     # Check for vertical in a row
-                    for i in xrange (WINNING_ROW_LENGTH):
+                    for i in xrange (1, WINNING_ROW_LENGTH):
                         if current_contents != self.get_square(x, y + i):
                             break
                     else:
                         return current_contents
 
                     # Check for three in a row
-                    for i in xrange (WINNING_ROW_LENGTH):
+                    for i in xrange (1, WINNING_ROW_LENGTH):
                         if current_contents != self.get_square(x + i, y):
                             break
                     else:
                         return current_contents
 
                     # Check for diagonal down right in a row
-                    for i in xrange (WINNING_ROW_LENGTH):
+                    for i in xrange (1, WINNING_ROW_LENGTH):
                         if current_contents != self.get_square(x + i, y + i):
                             break
                     else:
@@ -77,37 +74,6 @@ class OxoBoard:
                         if current_contents != self.get_square(x + i, y - i):
                             break
                     else:
-                        return current_contents
-        return 0
-
-    def get_winner_old(self):
-        """ Not used now. Kept it for nostalgia.
-        If a player has three in a row, return 1 or 2 depending on which player.
-            Otherwise, return 0. """
-
-        for x in xrange (BOARD_EDGE_LENGTH):
-            for y in xrange (BOARD_EDGE_LENGTH):
-
-                current_contents = self.get_square(x, y)
-
-                if current_contents != 0:
-
-                    # Could collaborate the following checks but the result would be less readable
-
-                    # Check for vertical three in a row
-                    if current_contents == self.get_square(x, y + 1) == self.get_square(x, y + 2):
-                        return current_contents
-
-                    # Check for horizontal three in a row
-                    if current_contents == self.get_square(x + 1, y) == self.get_square(x + 2, y):
-                        return current_contents
-
-                    # Check for diagonal down right three in a row
-                    if current_contents == self.get_square(x + 1, y + 1) == self.get_square(x + 2, y + 2):
-                        return current_contents
-
-                    #  Check for diagonal down left three in a row
-                    if current_contents == self.get_square(x + 1, y - 1) == self.get_square(x + 2, y - 2):
                         return current_contents
         return 0
 
