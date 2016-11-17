@@ -42,6 +42,7 @@ while (true) loop
 		print "Game Over"
 		print "You have run out of guesses"
 		print "The correct answer was " secretWord
+		end
 ```
 
 ![Flowchart](Comp110wsBflow.PNG)
