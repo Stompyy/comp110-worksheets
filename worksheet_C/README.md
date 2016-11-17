@@ -13,8 +13,8 @@ worksheet_C
 (f) O(n log n)
 From reading the python source code https://hg.python.org/cpython/file/c6880edaf6f3/Objects/listobject.c, Tim's official python readme text document http://svn.python.org/view/python/trunk/Objects/listsort.txt?revision=69846&view=markup, before googling the answer before my head exploded, at https://wiki.python.org/moin/TimeComplexity.
 
-(g) by multiplying compound orders. SORT(list) is O(n log n). HasDuplicate(list) is linear O(n). Therefore the order of the copound algorithm is O(n) * O(n log n) == O(n^2 * log n).
+(g) SORT(list) is O(n log n). HasDuplicate(list) is linear O(n). Therefore the order of the combined algorithm is O(n) + O(n log n) == O(n log n + n), where the dominant term is O(n log n).
 
-(h) As n increases, the dominant terms of n^2 * log n will tend to higher values than just the dominant term of n^2. Therefore the first algorithm O(n^2) will run faster if the size of the input list is large.
+(h) As n increases, the dominant terms of n log n will tend to lower values than the dominant term of n^2. Therefore the first algorithm O(n log n) will run faster if the size of the input list is large.
 
-(i) For simplicity in reading and debugging by using inbuilt functions like pythons sort().
+(i) For readability and maintainability.
